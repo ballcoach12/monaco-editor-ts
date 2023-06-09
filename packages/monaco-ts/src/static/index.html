@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monaco Editor Wrapper TypeScript Example</title>
+    <link rel="stylesheet" href="../../libs/monaco-editor-wrapper/assets/style.css">
+</head>
+
+<body>
+    <button type="button" id="button-start">Start</button>
+    <button type="button" id="button-swap">Swap Diff</button>
+    <button type="button" id="button-dispose">Dispose</button>
+    <div id="monaco-editor-root" style="height: 80vh;"></div>
+     <script type="module">
+        import { MonacoEditorLanguageClientWrapper } from '../../libs/monaco-editor-wrapper/mew.js';
+        import { buildWorkerDefinition } from '../../libs/monaco-editor-workers/index.js';
+        buildWorkerDefinition('./libs/monaco-editor-workers/workers', import.meta.url, false);
+
+        const wrapper = new MonacoEditorLanguageClientWrapper();
+        const startWrapper = async () => {
+            const wrapperConfig = {
+                htmlElement: document.getElementById('monaco-editor-root'),
+                wrapperConfig: {
+                    useVscodeConfig: false
+                },
+                languageClientConfig: {
+                    enabled: false
+                },
+                editorConfig: {
+                    languageId: 'javascript',
+                    useDiffEditor: true,
+                    theme: 'vs-dark',
+                    automaticLayout: true,
+                    codeOriginal: `function logOriginal() {
+    console.log('Hello original editor!');
+};`,
+                    code: `function logModified() {
+    console.log('Hello modified editor!');
+};`
+                }
+            };
+            await wrapper.start(wrapperConfig);
+            console.log('wrapper was started.');
+        };
+
+        startWrapper();
+    </script>;
+</body>
+
+</html>

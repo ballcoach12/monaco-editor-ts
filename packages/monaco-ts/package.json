@@ -1,0 +1,35 @@
+{
+  "name": "dts-editor-lit",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf ./dist/",
+    "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ./monaco-editor-wrapper",
+    "copy:monaco-workers": "npx shx cp -fr ./node_modules/monaco-editor-workers/dist/ ./monaco-editor-workers",
+    "copy:output": "npx shx cp -fr ./out/*.js* ./dist",
+    "prepare:build": "npm run prepare:dist && npm run build",
+    "build": "tsc -b tsconfig.json",
+    "build:web": "npm run build && npm run prepare:build && npm run copy:monaco-editor-wrapper && npm run copy:monaco-workers && npm run copy:output",
+    "prepare:dist": "npx shx mkdir -p ./dist && npx shx cp -fr ./src/static/* ./dist/",
+    "start": "node ./out/web/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "monaco-editor-workers": "^0.37.0",
+    "monaco-editor-wrapper": "^2.0.0",
+    "monaco-languageclient": "~6.0.3",
+    "vscode": "npm:@codingame/monaco-vscode-api@~1.78.8",
+    "vscode-languageclient": "~8.1.0",
+    "vscode-languageserver": "~8.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "buffer": "^6.0.3",
+    "parcel": "^2.9.2",
+    "process": "^0.11.10"
+  }
+}
